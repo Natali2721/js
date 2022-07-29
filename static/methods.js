@@ -1,5 +1,11 @@
-const numbers = [1, 2, 3, 4, 5, 6];
+const numbers = [1, 2, 3, 4, 5, 6, 15, 12];
 const arrNumbers = [1, 2, 3, [5, 6], [7, [8, 9, 10]]];
+
+const number = numbers.find(number => number > 10);
+//console.log(number);
+
+const filteredNumbers = numbers.filter(number => number < 10 || number > 20);
+//console.log(filteredNumbers);
 
 /*
  * Array.prototype.forEach(callback(currentValue, index, array), thisArg)
@@ -92,6 +98,81 @@ const updatedPlayers = players.map(player => {
  * - По умолчанию глубина 1
  */
 
+
+/*
+ * Получаем массив всех онлайн игроков
+ */
+
+const onlinePlayers = players.filter(({ online }) => online);
+// console.table(onlinePlayers);
+
+/*
+ * Получаем массив всех оффлайн игроков
+ */
+
+const offlinePlayers = players.filter(player => !player.online);
+// console.table(offlinePlayers);
+
+/*
+ * Получаем список хардкорных игроков с временем больше 250
+ */
+
+/*
+const hardcorePlayers = players.filter(player => player.timePlayed > 250);
+// console.table(hardcorePlayers);
+
+*/
+const playerIdToFind = 'player-3';
+const playerWithId = players.find(({ id }) => id === playerIdToFind);
+//console.log(playerWithId);
+
+const finPlayerById = (allPlayer, playerId) => {
+  return allPlayer.find(({ id }) => id === playerId);
+};
+
+// console.log(finPlayerById(players, 'player-1'));
+// console.log(finPlayerById(players, 'player-4'));
+
+/*
+ * Ищем игрока по имени
+ */
+const playerNameToFind = 'Poly';
+const playerWithName = players.find(player => player.name === playerNameToFind);
+// console.log(playerWithName);
+
+/*
+ * Array.prototype.every()
+ * - Поэлементо перебирает оригинальный массив
+ * - Возвращает true если все элементы массива удовлетворяют условию
+ */
+
+const isAllOnline = players.every(player => player.online);
+// console.log('isAllOnline: ', isAllOnline);
+
+/*
+ * Array.prototype.some()
+ * - Поэлементо перебирает оригинальный массив
+ * - Возвращает true если хотя бы один элемент массива удовлетворяет условию
+ */
+const isAnyOnline = players.some(player => player.online);
+console.log('isAnyOnline: ', isAnyOnline);
+
+const anyHardcorePlayers = players.some(player => player.timePlayed > 400);
+console.log('anyHardcorePlayers: ', anyHardcorePlayers);
+
+
+
+const totalTimePlayed = players.reduce(
+  (totalTime, player) => totalTime + player.timePlayed,
+  0,
+);
+
+// console.log(totalTimePlayed);
+
+
+
+
+
 const array = [1, 2, [4, [5]], [6, [7, 8, [9]]]];
 // console.log(array.flat(3));
 
@@ -130,17 +211,57 @@ const stats = tweets
 
 //console.log(stats);
 
-*/
+
+/*
+ * Собираем все теги из твитов
+ */
+const tweets = [
+  { id: '000', likes: 5, tags: ['js', 'nodejs'] },
+  { id: '001', likes: 2, tags: ['html', 'css'] },
+  { id: '002', likes: 17, tags: ['html', 'js', 'nodejs'] },
+  { id: '003', likes: 8, tags: ['css', 'react'] },
+  { id: '004', likes: 0, tags: ['js', 'nodejs', 'react'] },
+];
+
+const allTags = tweets.reduce((acc, tweet) => [...acc, ...tweet.tags], []);
+console.log(allTags);
+
+// acc = [], tweet.tags = ['js', 'nodejs'] return [...[], ...['js', 'nodejs']]
+// acc = ['js', 'nodejs'] tweet.tags ['html', 'css']
+// return  [...['js', 'nodejs'], ...['html', 'css']]
+//  ['js', 'nodejs', 'html', 'css']
+
+/*
+ * Ведём статистику тегов
+ */
+// const tagsStats = allTags.reduce((acc, tag) => {
+//   console.log(acc);
+
+//   if (acc[tag]) {
+//     acc[tag] += 1;
+
+//     return acc;
+//   }
+
+//   acc[tag] = 1;
+
+//   return acc;
+// }, {});
+
+const tagsStats = allTags.reduce((acc, tag) => {
+  return {
+    ...acc,
+    [tag]: acc[tag] ? acc[tag] + 1 : 1,
+  };
+}, {});
+// console.log(tagsStats);
+
+// если свойство с ключом tag есть. увеличить его значение на 1
+// если свойствоства нет с таким ключом что в tag, сделать и записать 1
+
 /*
 //! Объсните пример подсчета количества тегов.
 
-const tweets = [
-  { id: "000", likes: 5, tags: ["js", "nodejs"] },
-  { id: "001", likes: 2, tags: ["html", "css"] },
-  { id: "002", likes: 17, tags: ["html", "js", "nodejs"] },
-  { id: "003", likes: 8, tags: ["css", "react"] },
-  { id: "004", likes: 0, tags: ["js", "nodejs", "react"] }
-];
 
 // збирає всі теги в новий масив
 const getTags = (tweets = []) =>
@@ -527,8 +648,8 @@ const sortByAscendingAmount = function (cars = []) {
   Параметр isAsc відповідає за тип сортування - за збільшенням чи за зменшенням кількості
 */
 
-const sortAsc = (current, next) => current.amount - next.amount;
-const sortDesc = (current, next) => next.amount - current.amount;
+//const sortAsc = (current, next) => current.amount - next.amount;
+//const sortDesc = (current, next) => next.amount - current.amount;
 
 /**
  * @param {Object[]} cars
@@ -548,88 +669,12 @@ console.log( sortByAmount(cars, false) );
 */
 
 /*
-const numbers = [5, 10, 15, 20, 25];
-
-const filteredNumbers = numbers.filter(number => number < 10 || number > 20);
-// console.log(filteredNumbers);
-
-const players = [
-  { id: 'player-1', name: 'Mango', timePlayed: 310, points: 54, online: false },
-  { id: 'player-2', name: 'Poly', timePlayed: 470, points: 92, online: true },
-  { id: 'player-3', name: 'Kiwi', timePlayed: 230, points: 48, online: true },
-  { id: 'player-4', name: 'Ajax', timePlayed: 150, points: 71, online: false },
-  { id: 'player-5', name: 'Chelsy', timePlayed: 280, points: 48, online: true },
-];
-
-/*
- * Получаем массив всех онлайн игроков
- */
-
-const onlinePlayers = players.filter(({ online }) => online);
-// console.table(onlinePlayers);
-
-/*
- * Получаем массив всех оффлайн игроков
- */
-
-const offlinePlayers = players.filter(player => !player.online);
-// console.table(offlinePlayers);
-
-/*
- * Получаем список хардкорных игроков с временем больше 250
- */
-
-/*
-const hardcorePlayers = players.filter(player => player.timePlayed > 250);
-// console.table(hardcorePlayers);
-
-*/
-const playerIdToFind = 'player-3';
-const playerWithId = players.find(({ id }) => id === playerIdToFind);
-// console.log(playerWithId);
-
-const finPlayerById = (allPlayer, playerId) => {
-  return allPlayer.find(({ id }) => id === playerId);
-};
-
-// console.log(finPlayerById(players, 'player-1'));
-// console.log(finPlayerById(players, 'player-4'));
-
-/*
- * Ищем игрока по имени
- */
-const playerNameToFind = 'Poly';
-const playerWithName = players.find(player => player.name === playerNameToFind);
-// console.log(playerWithName);
-
-/*
- * Array.prototype.every()
- * - Поэлементо перебирает оригинальный массив
- * - Возвращает true если все элементы массива удовлетворяют условию
- */
-
-const isAllOnline = players.every(player => player.online);
-// console.log('isAllOnline: ', isAllOnline);
-
-/*
- * Array.prototype.some()
- * - Поэлементо перебирает оригинальный массив
- * - Возвращает true если хотя бы один элемент массива удовлетворяет условию
- */
-const isAnyOnline = players.some(player => player.online);
-console.log('isAnyOnline: ', isAnyOnline);
-
-const anyHardcorePlayers = players.some(player => player.timePlayed > 400);
-console.log('anyHardcorePlayers: ', anyHardcorePlayers);
 
 
 
-const totalTimePlayed = players.reduce(
-  (totalTime, player) => totalTime + player.timePlayed,
-  0,
-);
 
-// console.log(totalTimePlayed);
+
+
 
 /*
  * Считаем общую сумму товаров корзины
@@ -638,6 +683,7 @@ const cart = [
   { label: 'Apples', price: 100, quantity: 2 },
   { label: 'Bananas', price: 120, quantity: 3 },
   { label: 'Lemons', price: 70, quantity: 4 },
+  { label: 'Oranges', price: 150, quantity: 5 },
 ];
 
 const totalAmount = cart.reduce(
@@ -645,54 +691,36 @@ const totalAmount = cart.reduce(
   0,
 );
 
-// console.log(totalAmount);
+const totalQuantity = cart.reduce(
+  (total, { quantity }) => total + quantity,
+  0,
+);
 
-/*
- * Собираем все теги из твитов
- */
-const tweets = [
-  { id: '000', likes: 5, tags: ['js', 'nodejs'] },
-  { id: '001', likes: 2, tags: ['html', 'css'] },
-  { id: '002', likes: 17, tags: ['html', 'js', 'nodejs'] },
-  { id: '003', likes: 8, tags: ['css', 'react'] },
-  { id: '004', likes: 0, tags: ['js', 'nodejs', 'react'] },
-];
+const assorty = cart.map(item => item.label);
 
-const allTags = tweets.reduce((acc, tweet) => [...acc, ...tweet.tags], []);
-console.log(allTags);
+const priceLux = cart.filter(item => item.price > 100);
 
-// acc = [], tweet.tags = ['js', 'nodejs'] return [...[], ...['js', 'nodejs']]
-// acc = ['js', 'nodejs'] tweet.tags ['html', 'css']
-// return  [...['js', 'nodejs'], ...['html', 'css']]
-//  ['js', 'nodejs', 'html', 'css']
+const findApples = cart.find(item => item.label === 'Apples');
 
-/*
- * Ведём статистику тегов
- */
-// const tagsStats = allTags.reduce((acc, tag) => {
-//   console.log(acc);
+//const sortByPrice = cart.sort((a, b) => { return a.price - b.price; });
+// змінює вихідний массив
 
-//   if (acc[tag]) {
-//     acc[tag] += 1;
+const sortByPriceNew = [...cart].sort((a, b) => { return a.price - b.price; });
+// не змінює вихідний массив
 
-//     return acc;
-//   }
 
-//   acc[tag] = 1;
 
-//   return acc;
-// }, {});
+console.log(totalAmount);
+console.log(totalQuantity);
+console.log(assorty);
+console.log(priceLux);
+console.log(findApples);
+//console.log(sortByPrice);
 
-const tagsStats = allTags.reduce((acc, tag) => {
-  return {
-    ...acc,
-    [tag]: acc[tag] ? acc[tag] + 1 : 1,
-  };
-}, {});
-// console.log(tagsStats);
 
-// если свойство с ключом tag есть. увеличить его значение на 1
-// если свойствоства нет с таким ключом что в tag, сделать и записать 1
+console.log(sortByPriceNew);
+
+console.log(cart);
 
 
 
