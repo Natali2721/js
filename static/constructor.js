@@ -54,7 +54,7 @@ Car.prototype.changePrice = function (newPrice) {
 // console.log(myCar3);
 
 // myCar3.sayHi();
-
+/*
 const User = function ({ email, password } = {}) {
   this.email = email;
   this.password = password;
@@ -76,7 +76,7 @@ mango.changeEmail('my-new-mail@mail.com');
  * - Статические свойства и методы доступны только на самом конструкторе
  * - В статических методах не нужен this
  */
-
+/*
 User.message =
   'Я статическое свойство, меня нет на экземплярах или в прототипе.';
 
@@ -90,7 +90,7 @@ User.logInfo(mango);
 
 // Object.keys()
 // Object.value()
-
+*/
 // 1. У каждого обьекта есть свойство __proto__
 // 2. В этом свойстве лежит ссылка на его ПРОТОТИП, то есть другой обьект
 // 3. При создании литера обьекта, в свойство __proto__ записывается ссылка на Функция.prototype
@@ -100,3 +100,28 @@ User.logInfo(mango);
 // 7. Функция вызывается в контексте созданного объекта
 // 8. В свойство this.__proto__ записывается ссылка на обьект Функция.prototype
 // 9. Ссылка на обьект возвращается в место вызова new Фунукция()
+
+// геттер и сеттер
+class User {
+  #email;
+
+  constructor({ name, email }) {
+    this.name = name;
+    this.#email = email;
+  }
+
+  // Геттер email
+  get email() {
+    return this.#email;
+  }
+
+  // Сеттер email
+  set email(newEmail) {
+    this.#email = newEmail;
+  }
+}
+
+const mango = new User({ name: "Манго", email: "mango@mail.com" });
+console.log(mango.email); // mango@mail.com
+mango.email = "mango@supermail.com";
+console.log(mango.email); // mango@supermail.com
