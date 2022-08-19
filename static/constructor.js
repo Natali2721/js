@@ -102,6 +102,8 @@ User.logInfo(mango);
 // 9. Ссылка на обьект возвращается в место вызова new Фунукция()
 
 // геттер и сеттер
+
+/*
 class User {
   #email;
 
@@ -125,3 +127,73 @@ const mango = new User({ name: "Манго", email: "mango@mail.com" });
 console.log(mango.email); // mango@mail.com
 mango.email = "mango@supermail.com";
 console.log(mango.email); // mango@supermail.com
+*/
+// статичний метод
+
+/*
+class User {
+  static #takenEmails = [];
+
+  static isEmailTaken(email) {
+    return User.#takenEmails.includes(email);
+  }
+
+  #email;
+
+  constructor({ email }) {
+    this.#email = email;
+    User.#takenEmails.push(email);
+  }
+}
+
+const mango = new User({ email: "mango@mail.com" });
+
+console.log(User.isEmailTaken("poly@mail.com"));
+console.log(User.isEmailTaken("mango@mail.com"));
+
+console.log(User.takenEmails);
+console.log(mango);
+console.log(User);
+
+*/
+//дочірній клас
+
+class User {
+  #email;
+
+  constructor(email) {
+    this.#email = email;
+  }
+
+  get email() {
+    return this.#email;
+  }
+
+  set email(newEmail) {
+    this.#email = newEmail;
+  }
+}
+
+class ContentEditor extends User {
+  constructor({ email, posts }) {
+    // Вызов конструктора родительского класса User
+    super(email);
+    this.posts = posts;
+  }
+
+  addPost(post) {
+    this.posts.push(post);
+  }
+}
+
+const editor = new ContentEditor({ email: "mango@mail.com", posts: [] });
+console.log(editor); // { email: 'mango@mail.com', posts: [] }
+console.log(editor.email); // 'mango@mail.com'
+
+
+
+const editorA = new ContentEditor({ email: "mango@mail.com", posts: [] });
+console.log(editorA); // { email: 'mango@mail.com', posts: [] }
+console.log(editorA.email); // 'mango@mail.com'
+editorA.addPost("post-1");
+console.log(editorA.posts); // ['post-1']
